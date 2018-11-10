@@ -1,0 +1,55 @@
+{
+    "$jason": {
+      "head": {
+        "title": "INVENTORY APP",
+        "styles": {
+          "bold": {
+            "font": "HelveticaNeue-CondensedBold",
+            "padding": "10",
+            "size": "15"
+          },
+          "normal": {
+            "font": "HelveticaNeue",
+            "size": "12"
+          }
+        },
+        "actions": {
+          "$load": {
+            "type": "$render"
+          },
+          "$foreground": {
+            "type": "$reload"
+          }
+        }
+      },
+      "body": {
+        "header": {
+          "title": "Inventory App 0.1",
+          "menu": {
+            "text": "Refresh",
+            "style": {
+              "font": "AvenirNext-Heavy",
+              "size": "18"
+            },
+            "action": {
+              "type": "$util.toast",
+              "options": {
+                "text": "Good job!"
+              }
+            },
+            "search": {
+              "name": "query",
+              "placeholder": "Enter keyword",
+              "action": {
+                "type": "$util.banner",
+                "options": {
+                  "title": "{{$get.query}}",
+                  "description": "The content inside the search input is {{$get.query}}"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
