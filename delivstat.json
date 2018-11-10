@@ -1,53 +1,101 @@
 {
     "$jason": {
       "head": {
-        "title": "INVENTORY APP",
-        "styles": {
-          "bold": {
-            "font": "HelveticaNeue-CondensedBold",
-            "padding": "10",
-            "size": "15"
-          },
-          "normal": {
-            "font": "HelveticaNeue",
-            "size": "12"
-          }
-        },
+        "title": "Barcode Testing with inline update",
         "actions": {
-          "$load": {
-            "type": "$render"
-          },
-          "$foreground": {
-            "type": "$reload"
-          }
-        }
-      },
-      "body": {
-        "header": {
-          "title": "Inventory App 0.1",
-          "menu": {
-            "text": "Refresh",
-            "style": {
-              "font": "AvenirNext-Heavy",
-              "size": "18"
+          "qr": {
+            "type": "$set",
+            "options": {
+              "content": "Scanning..."
             },
-            "action": {
-              "type": "$util.toast",
+            "success": {
+              "type": "$vision.scan",
               "options": {
-                "text": "Good job!"
+                "type": "Code 128"
+              },
+              "success": {
+                "type": "$render"
               }
+            }
+          },
+          "qr2": {
+            "type": "$vision.scan",
+            "options": {
+              "type": "Code 128"
+            }
+          },
+          "$vision.ready": {
+            "trigger": "qr"
+          },
+          "$pull": {
+            "trigger": "qr"
+          },
+          "$load": {
+            "type": "$set",
+            "options": {
+              "content": "Scanning..."
             },
-            "search": {
-              "name": "query",
-              "placeholder": "Enter keyword",
-              "action": {
-                "type": "$util.banner",
+            "success": {
+              "type": "$render"
+            }
+          },
+          "$vision.onscan": {
+            "type": "$set",
+            "options": {
+              "content": "{{$jason.content}}"
+            },
+            "success": {
+              "type": "$render",
+              "success": {
+                "type": "$timer.start",
                 "options": {
-                  "title": "{{$get.query}}",
-                  "description": "The content inside the search input is {{$get.query}}"
+                  "interval": "1",
+                  "name": "timer1",
+                  "action": {
+                    "trigger": "qr2"
+                  }
                 }
               }
             }
+          }
+        },
+        "templates": {
+          "body": {
+            "style": {
+              "border": "none"
+            },
+            "background": {
+              "type": "camera",
+              "options": {
+                "device": "back"
+              }
+            },
+            "sections": [
+              {
+                "items": [
+                  {
+                    "type": "vertical",
+                    "href": {
+                      "url": "{{$get.content}}",
+                      "transition": "modal"
+                    },
+                    "components": [
+                      {
+                        "type": "label",
+                        "text": "{{$get.content}}",
+                        "style": {
+                          "color": "#ffffff",
+                          "font": "Courier",
+                          "size": "16",
+                          "padding": "10",
+                          "background": "rgba(0,0,0,0.2)"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         }
       }
